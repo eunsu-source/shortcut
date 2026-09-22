@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Catch — 늦기 전에 출발하는 코치</title>
+  <meta name="description" content="준비 습관과 실시간 교통 상황을 반영해 지금 해야 할 행동과 도착 가능성을 알려주는 출발 코치 서비스">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-pin" viewBox="0 0 24 24"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></symbol>
+  <symbol id="icon-alarm" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><path d="M12 9.5v4l3 2"/><path d="M5 4 2.5 6.8"/><path d="M22 6.8 19.5 4"/><path d="M9.5 2h5"/></symbol>
+  <symbol id="icon-mirror" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="16" rx="6"/><path d="M9 21h6"/><path d="M12 19v2"/></symbol>
+  <symbol id="icon-bag" viewBox="0 0 24 24"><path d="M6.2 8h11.6l1 12H5.2L6.2 8z"/><path d="M9 8V6.2a3 3 0 0 1 6 0V8"/></symbol>
+  <symbol id="icon-shoe" viewBox="0 0 24 24"><path d="M3 16.2c0-1 .8-1.7 1.8-2.1l3.9-1.6c.7-.3 1.2-1 1.2-1.8V9.2l2.4 1.8c1 .8 2.3 1.2 3.6 1.2H20c.6 0 1 .5 1 1.1v2.9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="icon-door" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.2"/><circle cx="14.3" cy="12" r="1"/></symbol>
+  <symbol id="icon-building" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18"/><path d="M9.5 21v-4h5v4"/><path d="M8 7.2h2.2M13.8 7.2H16M8 11.4h2.2M13.8 11.4H16"/></symbol>
+  <symbol id="icon-flag" viewBox="0 0 24 24"><path d="M6 21V4"/><path d="M6 4.5h11l-2.7 3.5L17 11.5H6"/></symbol>
+  <symbol id="icon-train" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="12.5" rx="4"/><path d="M5 11.8h14"/><circle cx="9" cy="18.6" r="1.1"/><circle cx="15" cy="18.6" r="1.1"/><path d="M8 8h3M13 8h3"/></symbol>
+  <symbol id="icon-cloud-off" viewBox="0 0 24 24"><path d="M17 15.2a4 4 0 0 0-1-7.9 6 6 0 0 0-11-1.5"/><path d="M5.6 9.4A3.6 3.6 0 0 0 6 16.6h9"/><path d="M3 3l18 18"/></symbol>
+  <symbol id="icon-speed" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 13 16.2 8.8"/><path d="M8 13h.01M12 21v.01M4 13h.01M20 13h.01"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><circle cx="17.3" cy="9" r="2.3"/><path d="M15.8 12.2c2.3.5 4.2 2 4.2 4.8"/></symbol>
+  <symbol id="icon-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m7.8 12.3 2.7 2.7 5.2-6"/></symbol>
+  <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M12 3.5 22 20.5H2z"/><path d="M12 9.8v4"/><path d="M12 16.8h.01"/></symbol>
+  <symbol id="icon-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.1"/><circle cx="18" cy="6" r="2.1"/><path d="M6 15.9V13a4 4 0 0 1 4-4h2a4 4 0 0 0 4-4"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v5l3.4 2"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 19 6v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+  <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 3.5v4.5h-4.5"/></symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18"/><path d="M8 2.5v4M16 2.5v4"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/></symbol>
+  <symbol id="icon-map" viewBox="0 0 24 24"><path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#hero">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#icon-pin"></use></svg></span>
+      Catch
+    </a>
+    <nav class="nav-links" aria-label="주요 메뉴">
+      <a href="#diff">서비스 소개</a>
+      <a href="#how">어떻게 작동하나요</a>
+      <a href="#beta">베타 신청</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#demo">내 출발 시간 계산하기</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">출발 코치, Catch</p>
+        <h1>늦었을 때 길을 찾지 말고,<br><mark>늦기 전에</mark> 출발하세요.</h1>
+        <p class="lead">Catch는 나의 준비 시간과 실시간 이동 상황을 계산해 중요한 일정에 맞춰 지금 해야 할 행동을 알려줍니다.</p>
+        <div class="hero-ctas">
+          <a href="#demo" class="btn btn-primary btn-lg">내 출발 시간 계산하기 <svg class="icon-sm" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></a>
+          <a href="#how" class="btn btn-ghost btn-lg">어떻게 작동하나요</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <article class="ticket-card" aria-label="내일 서울역 KTX 탑승 계획 미리보기">
+          <div class="ticket-top">
+            <span class="pill"><svg class="icon-sm" aria-hidden="true"><use href="#icon-train"></use></svg>내일 · 서울역 KTX 123</span>
+            <span class="badge badge-spare">여유 있음</span>
+          </div>
+          <dl class="ticket-stats">
+            <div class="stat-row"><dt>출발</dt><dd>오전 10:00</dd></div>
+            <div class="stat-row"><dt>승강장 도착 목표</dt><dd>오전 9:55</dd></div>
+          </dl>
+          <div class="ticket-perf" aria-hidden="true"></div>
+          <p class="ticket-label">집에서 출발까지</p>
+          <p class="flap-timer" id="heroTimer">1:42:00</p>
+          <a href="#demo" class="btn btn-primary btn-block">출발 루틴 만들기</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo" id="demo">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">핵심 데모</p>
+        <h2>내일 KTX를 타야 한다면</h2>
+        <p class="sub">일정과 나의 준비 습관, 실시간 교통 상황을 역산해 출발 시각을 계산합니다.</p>
+      </div>
+
+      <div class="dash-panel dash-normal">
+        <span class="dash-progress"><svg class="icon-sm" aria-hidden="true"><use href="#icon-train"></use></svg>내일 오전 10:00 · 서울역 KTX 123</span>
+        <p class="dash-kicker">내일 오전</p>
+        <p class="dash-time">8:57</p>
+        <p class="dash-sub">현관문을 나가야 해요.</p>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="gauge" style="--pct:86; --gauge-color:var(--green)">
+              <span class="gauge-value">86<small>%</small></span>
+            </div>
+            <p class="stat-label">탑승 성공 가능성</p>
+          </div>
+          <div class="stat-card stat-card-plain">
+            <p class="stat-big">9:48</p>
+            <p class="stat-label">예상 승강장 도착</p>
+          </div>
+          <div class="stat-card stat-card-plain">
+            <p class="stat-big">7분</p>
+            <p class="stat-label">여유 시간</p>
+          </div>
+        </div>
+        <div class="badge-wrap"><span class="badge badge-spare badge-lg"><svg class="icon-sm" aria-hidden="true"><use href="#icon-check-circle"></use></svg>여유 있음</span></div>
+
+        <div class="timeline-wrap">
+          <p class="timeline-title">// 출발 루틴 타임라인</p>
+          <ol class="timeline-list">
+            <li class="tl-item">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-alarm"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">07:45</span><span class="tl-label">기상</span></div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-mirror"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">08:15</span><span class="tl-label">준비 시작</span></div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-bag"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">08:42</span><span class="tl-label">짐 챙기기</span></div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-shoe"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">08:52</span><span class="tl-label">신발 신기</span></div>
+            </li>
+            <li class="tl-item tl-current">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-door"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">08:57</span><span class="tl-label">지금 집에서 출발</span></div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-building"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">09:21</span><span class="tl-label">서울역 도착</span></div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-flag"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">09:48</span><span class="tl-label">KTX 승강장 도착</span></div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-icon"><svg class="icon-sm" aria-hidden="true"><use href="#icon-train"></use></svg></div>
+              <div class="tl-body"><span class="tl-time">10:00</span><span class="tl-label">KTX 출발</span></div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="live-panel">
+          <p class="live-title">실시간 변수 반영 중</p>
+          <div class="live-grid">
+            <div class="live-item">
+              <span class="dot-icon c-green"><svg class="icon-sm" aria-hidden="true"><use href="#icon-check-circle"></use></svg></span>
+              <span><strong>지하철 1호선</strong><span>정상 운행</span></span>
+            </div>
+            <div class="live-item">
+              <span class="dot-icon c-caution"><svg class="icon-sm" aria-hidden="true"><use href="#icon-users"></use></svg></span>
+              <span><strong>서울역 혼잡도</strong><span>약간 붐빔</span></span>
+            </div>
+            <div class="live-item">
+              <span class="dot-icon c-green"><svg class="icon-sm" aria-hidden="true"><use href="#icon-cloud-off"></use></svg></span>
+              <span><strong>날씨</strong><span>우천 없음</span></span>
+            </div>
+            <div class="live-item">
+              <span class="dot-icon c-green"><svg class="icon-sm" aria-hidden="true"><use href="#icon-speed"></use></svg></span>
+              <span><strong>내 평균 보행 속도</strong><span>일반 사용자보다 8% 빠름</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel dash-danger">
+        <span class="dash-progress dash-progress-danger"><svg class="icon-sm" aria-hidden="true"><use href="#icon-alert"></use></svg>서울역 KTX 123 · 출발까지</span>
+        <p class="dash-headline-lg">지금 나가야 돼요.</p>
+        <p class="dash-kicker">KTX 출발까지</p>
+        <p class="flap-timer flap-timer-danger" id="emergencyTimer">28:00</p>
+
+        <div class="stat-grid stat-grid-danger">
+          <div class="stat-card">
+            <div class="gauge" style="--pct:52; --gauge-color:var(--danger)">
+              <span class="gauge-value">52<small>%</small></span>
+            </div>
+            <p class="stat-label">현재 경로 기준<br>탑승 성공 가능성</p>
+          </div>
+          <div class="stat-card stat-card-plain">
+            <span class="badge badge-caution"><svg class="icon-sm" aria-hidden="true"><use href="#icon-users"></use></svg>환승 통로 혼잡 · +3분 지연</span>
+            <p class="stat-note">서울역 환승 통로 혼잡으로 예상 도착이 늦어지고 있어요.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <svg class="icon" aria-hidden="true"><use href="#icon-route"></use></svg>
+          <p>지금 출발하면 가능성이 있어요. 다음 지하철을 놓치면 다음 열차를 확인하세요.</p>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-outline-danger" id="btnRoute" type="button" aria-expanded="false" aria-controls="panelRoute">
+            <svg class="icon-sm" aria-hidden="true"><use href="#icon-route"></use></svg>최단 안전 경로 보기
+          </button>
+          <button class="btn btn-outline-ink" id="btnAlt" type="button" aria-expanded="false" aria-controls="panelAlt">
+            <svg class="icon-sm" aria-hidden="true"><use href="#icon-clock"></use></svg>다음 열차 대안 보기
+          </button>
+        </div>
+
+        <div class="reveal-panel" id="panelRoute" hidden>
+          <p class="reveal-title">최단 안전 경로<span class="tag-mock">예시 경로</span></p>
+          <div class="route-map" id="routeMap">
+            <div class="route-map-fallback" id="routeMapFallback">
+              <svg class="icon" aria-hidden="true"><use href="#icon-map"></use></svg>
+              <p>카카오맵 API 키를 연결하면 실시간 지도가 표시돼요.</p>
+              <p class="fallback-hint">script.js 상단 KAKAO_MAP_APP_KEY 값을 교체하세요.</p>
+            </div>
+          </div>
+          <p class="stat-note">지도 위 초록 점은 기기의 현재 위치예요. 브라우저가 위치 권한을 물으면 허용해 주세요.</p>
+          <ol class="reveal-steps">
+            <li>지하철 1호선 · 다음 열차 3분 후 도착</li>
+            <li>서울역 2번 출구 방면 하차 · 환승 통로 대신 지상 통로 이용</li>
+            <li>15번 승강장 직행 에스컬레이터로 이동 · 예상 단축 2분</li>
+          </ol>
+        </div>
+        <div class="reveal-panel" id="panelAlt" hidden>
+          <p class="reveal-title">다음 열차 대안</p>
+          <div class="reveal-alt">
+            <span>KTX 125 · 서울 → 부산</span>
+            <strong>10:30 출발</strong>
+            <span class="badge badge-spare">여유 32분</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="diff" id="diff">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">서비스 차별점</p>
+        <h2>지도가 아니라, 나를 위한 출발 코치</h2>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <span class="diff-icon"><svg class="icon" aria-hidden="true"><use href="#icon-speed"></use></svg></span>
+          <h3>나의 실제 속도를 반영</h3>
+          <p>평소 걷는 속도, 준비 시간, 계단·캐리어 여부를 학습해 평균이 아닌 나를 기준으로 계산해요.</p>
+        </div>
+        <div class="diff-card">
+          <span class="diff-icon"><svg class="icon" aria-hidden="true"><use href="#icon-refresh"></use></svg></span>
+          <h3>실시간 도착 가능성</h3>
+          <p>교통 지연, 환승, 혼잡, 날씨를 반영해 도착 가능성을 계속 업데이트해요.</p>
+        </div>
+        <div class="diff-card">
+          <span class="diff-icon"><svg class="icon" aria-hidden="true"><use href="#icon-door"></use></svg></span>
+          <h3>길보다 행동을 안내</h3>
+          <p>‘어디로 갈지’보다 ‘지금 무엇을 해야 하는지’를 가장 먼저 알려줘요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">작동 방식</p>
+        <h2>세 단계면 충분해요</h2>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <span class="how-num">01</span>
+          <span class="diff-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span>
+          <h3>일정 등록</h3>
+          <p>기차·비행기·면접 시간을 입력하거나 티켓을 등록해요.</p>
+          <svg class="how-arrow" width="32" height="24" viewBox="0 0 32 24" aria-hidden="true"><path d="M2 12h26M20 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="how-step">
+          <span class="how-num">02</span>
+          <span class="diff-icon"><svg class="icon" aria-hidden="true"><use href="#icon-route"></use></svg></span>
+          <h3>출발 루틴 생성</h3>
+          <p>준비, 출발, 환승, 탑승까지 필요한 시간을 자동으로 계산해요.</p>
+          <svg class="how-arrow" width="32" height="24" viewBox="0 0 32 24" aria-hidden="true"><path d="M2 12h26M20 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="how-step">
+          <span class="how-num">03</span>
+          <span class="diff-icon"><svg class="icon" aria-hidden="true"><use href="#icon-alert"></use></svg></span>
+          <h3>실시간 안내</h3>
+          <p>상황이 바뀌면 지금 해야 할 행동과 대안을 바로 알려줘요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="beta" id="beta">
+    <div class="section-inner beta-inner">
+      <div class="section-head center">
+        <p class="eyebrow">베타 신청</p>
+        <h2>다음 중요한 이동,<br>Catch와 함께 놓치지 마세요.</h2>
+      </div>
+
+      <form class="beta-form" id="betaForm">
+        <label class="field" for="betaContact">
+          <span class="field-label">이메일 또는 연락처</span>
+          <input type="text" id="betaContact" name="contact" placeholder="you@email.com 또는 010-0000-0000" required>
+        </label>
+        <fieldset class="chip-group">
+          <legend class="field-label">자주 이용하는 이동</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="mode" value="ktx" checked><span>KTX</span></label>
+            <label class="chip"><input type="radio" name="mode" value="airport"><span>공항</span></label>
+            <label class="chip"><input type="radio" name="mode" value="commute"><span>출퇴근</span></label>
+            <label class="chip"><input type="radio" name="mode" value="event"><span>공연·약속</span></label>
+          </div>
+        </fieldset>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">베타 테스트 신청하기</button>
+      </form>
+      <p class="beta-success" id="betaSuccess" role="status" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"></use></svg>
+        베타 신청이 접수됐어요. 출시 소식을 가장 먼저 보내드릴게요.
+      </p>
+      <p class="fine-print"><svg class="icon-sm" aria-hidden="true"><use href="#icon-shield"></use></svg>위치 정보는 이동 중에만 사용하며, 개인 이동 기록은 안전하게 관리합니다.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="section-inner footer-inner">
+    <span class="brand"><span class="brand-mark"><svg class="icon-sm" aria-hidden="true"><use href="#icon-pin"></use></svg></span>Catch</span>
+    <p>© 2026 Catch. 늦기 전에 출발하는 습관.</p>
+  </div>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>
