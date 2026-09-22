@@ -26,7 +26,7 @@
    - 카카오 개발자 콘솔의 Web 플랫폼 도메인에 위 접속 주소가
      등록되어 있어야 지도가 정상적으로 표시됩니다.
 ------------------------------------------------------------ */
-const KAKAO_MAP_APP_KEY = '96791a71b247dff173334f783e3f1aa6';
+const KAKAO_MAP_APP_KEY = 'd36ccaefdad2aee3a4dc1887f616c04d';
 
 (function () {
   'use strict';
